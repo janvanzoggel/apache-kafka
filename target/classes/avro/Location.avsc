@@ -1,0 +1,11 @@
+{"namespace": "nl.rubix.avro",
+  "type": "record",
+  "name": "Location",
+  "fields": [
+    {"name": "vehicle_id", "type": "string", "doc" : "id of the vehicle"},
+    {"name": "timestamp", "type": "long", "doc" : "time in seconds"},
+    {"name": "latitude", "type": "double"},
+    {"name": "longtitude",  "type": "double"}
+  ],
+  "doc:" : "A schema for vehicle movement events"
+}
