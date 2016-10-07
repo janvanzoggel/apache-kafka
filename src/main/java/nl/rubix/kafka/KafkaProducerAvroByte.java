@@ -22,7 +22,7 @@ public class KafkaProducerAvroByte
         producer.ProduceKafkaByte();
     }
 
-    public byte[] GenerateAvroString() throws IOException
+    public ByteArrayOutputStream GenerateAvroString() throws IOException
     {
         // Schema
         String schemaDescription = Location.getClassSchema().toString();
@@ -41,15 +41,13 @@ public class KafkaProducerAvroByte
         location.setTimestamp(System.currentTimeMillis() / 1000L);
         location.setLatitude(51.687402);
         location.setLongtitude(5.307759);
-        System.out.println("Generated message " + location.toString());
+        System.out.println("Message location " + location.toString());
 
         dataFileWriter.append(location);
         dataFileWriter.close();
-        System.out.println("ENCODE location: " + location);
-        System.out.println("ENCODE locationString: " + location.toString());
-        System.out.println("ENCODE outputStream: " + outputStream);
+        System.out.println("Encode outputStream: " + outputStream);
 
-        return outputStream.toByteArray();
+        return outputStream;
     }
 
     public void ProduceKafkaByte()
@@ -57,12 +55,8 @@ public class KafkaProducerAvroByte
         try
         {
             // Get the Apache AVRO message
-            byte[] data = GenerateAvroString();
-            System.out.println("HERE COMES THE DATA: " + data);
-
-            // Building the ByteArrayOutputStream
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-            outputStream.write(data, 0, data.length);
+            ByteArrayOutputStream data = GenerateAvroString();
+            System.out.println("Here comes the data: " + data);
 
             // Start KAFKA publishing
             Properties props = new Properties();
@@ -73,7 +67,7 @@ public class KafkaProducerAvroByte
 
             KafkaProducer<String, byte[]> messageProducer = new KafkaProducer<String, byte[]>(props);
             ProducerRecord<String, byte[]> producerRecord = null;
-            producerRecord = new ProducerRecord<String, byte[]>("test","1",data);
+            producerRecord = new ProducerRecord<String, byte[]>("test","1",data.toByteArray());
             messageProducer.send(producerRecord);
             messageProducer.close();
         }
