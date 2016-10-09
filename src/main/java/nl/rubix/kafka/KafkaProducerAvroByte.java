@@ -22,7 +22,7 @@ public class KafkaProducerAvroByte
         producer.ProduceKafkaByte();
     }
 
-    public ByteArrayOutputStream GenerateAvroString() throws IOException
+    public ByteArrayOutputStream GenerateAvroStream() throws IOException
     {
         // Schema
         String schemaDescription = Location.getClassSchema().toString();
@@ -55,7 +55,7 @@ public class KafkaProducerAvroByte
         try
         {
             // Get the Apache AVRO message
-            ByteArrayOutputStream data = GenerateAvroString();
+            ByteArrayOutputStream data = GenerateAvroStream();
             System.out.println("Here comes the data: " + data);
 
             // Start KAFKA publishing
